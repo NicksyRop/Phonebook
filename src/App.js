@@ -8,8 +8,10 @@ const App = () =>{
 
 const [ newName, setNewName] = useState('')
 
+const [ newNumber, setNumber] = useState('')
+
 const [ persons , setPersons] = useState([
-  {name : "Nickson Kipkorir"}
+  {name : "Nickson Kipkorir" , number : 422444242}
 ])
 
 const handleChange = (event) =>{
@@ -17,11 +19,18 @@ const handleChange = (event) =>{
   setNewName(event.target.value);
 }
 
+const handleChangeNumber = (event)=>{
+
+  setNumber(event.target.value)
+
+}
+
 const addPerson = (event) =>{
   event.preventDefault()
 
   const obj = {
-    name : newName
+    name : newName,
+    number : newNumber
   }
 
 if(persons.some( person => person.name === obj.name)){
@@ -36,11 +45,12 @@ if(persons.some( person => person.name === obj.name)){
   setPersons(persons.concat(obj))
  
   setNewName('')
+  setNumber("")
 }
 
 
 }
-const numbers = persons.map(person => <ul key={person.name}>{person.name}</ul>)
+const numbers = persons.map(person => <ul key={person.name}>{person.name} {person.number} </ul>)
 return(
 
   <div>
@@ -50,6 +60,10 @@ return(
       <div>
         <label>Name</label> <br/>
         <input type="text" value ={newName} onChange={handleChange}></input>
+      </div>
+      <div>
+        <label>Number</label> <br/>
+        <input type="number" value ={newNumber} onChange={handleChangeNumber}></input>
       </div>
 
       <div>
