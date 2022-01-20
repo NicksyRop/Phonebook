@@ -20,17 +20,23 @@ const handleChange = (event) =>{
 const addPerson = (event) =>{
   event.preventDefault()
 
-  const obj = { 
-
+  const obj = {
     name : newName
   }
 
-  setPersons( persons.concat(obj))
-  setNewName(' ')
+if(persons.some( person => person.name === obj.name)){
 
-  
+ alert( obj.name + " Already exist in phonebook")
 
+ setNewName('')
+}else{
 
+ 
+
+  setPersons(persons.concat(obj))
+ 
+  setNewName('')
+}
 
 
 }
@@ -42,7 +48,7 @@ return(
     <h1 style={{ color : "purple" , border : "2px solid purple"}}>Phonebook</h1>
     <form onSubmit={addPerson}>
       <div>
-        <label>Name</label>
+        <label>Name</label> <br/>
         <input type="text" value ={newName} onChange={handleChange}></input>
       </div>
 
