@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import phoneService from "./services/phone";
+import FindNumber from "./components/FindNumber";
 
 const App = () => {
   const [newName, setNewName] = useState("");
@@ -71,6 +72,8 @@ const App = () => {
   return (
     <div>
       <h1 style={{ color: "purple", border: "2px solid purple" }}>Phonebook</h1>
+
+      <FindNumber persons={persons} />
       <form onSubmit={addPerson}>
         <div>
           <label>Name</label> <br />
