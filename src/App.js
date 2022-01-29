@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-import phoneServie from "./services/phone";
+import phoneService from "./services/phone";
 
 const App = () => {
   const [newName, setNewName] = useState("");
@@ -11,7 +11,7 @@ const App = () => {
   const [persons, setPersons] = useState([]);
 
   useEffect(() => {
-    phoneServie.getAll().then((res) => {
+    phoneService.getAll().then((res) => {
       setPersons(res.data);
     });
   }, []);
@@ -31,12 +31,23 @@ const App = () => {
       number: newNumber,
     };
 
-    if (persons.filter((person) => person.name === obj.name)) {
-      alert(obj.name + " Already exist in phonebook");
+    const person = persons.find((person) => person.name === obj.name);
+
+    if (person) {
+      if (
+        window.confirm(
+          `${newName} already exist , do you want to replace old number with new one ?`
+        )
+      ) {
+        const newPhone = { ...person, number: obj.number };
+
+        phoneService.update(person.id, newPhone);
+      } else {
+      }
 
       setNewName("");
     } else {
-      phoneServie.create(obj);
+      phoneService.create(obj);
 
       setNewName("");
       setNumber("");
@@ -45,12 +56,12 @@ const App = () => {
 
   const handleClick = (id, name) => {
     if (window.confirm(` Are you sure you want to delete ${name} ?`)) {
-      phoneServie.destroy(id);
+      phoneService.destroy(id);
     } else {
     }
   };
   const numbers = persons.map((person) => (
-    <ul key={person.name}>
+    <ul key={person.id}>
       {person.name} {person.number}{" "}
       <button onClick={() => handleClick(person.id, person.name)}>
         Delete
