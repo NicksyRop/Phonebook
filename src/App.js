@@ -31,7 +31,7 @@ const App = () => {
       number: newNumber,
     };
 
-    if (persons.some((person) => person.name === obj.name)) {
+    if (persons.filter((person) => person.name === obj.name)) {
       alert(obj.name + " Already exist in phonebook");
 
       setNewName("");
@@ -42,9 +42,19 @@ const App = () => {
       setNumber("");
     }
   };
+
+  const handleClick = (id, name) => {
+    if (window.confirm(` Are you sure you want to delete ${name} ?`)) {
+      phoneServie.destroy(id);
+    } else {
+    }
+  };
   const numbers = persons.map((person) => (
     <ul key={person.name}>
       {person.name} {person.number}{" "}
+      <button onClick={() => handleClick(person.id, person.name)}>
+        Delete
+      </button>
     </ul>
   ));
   return (
