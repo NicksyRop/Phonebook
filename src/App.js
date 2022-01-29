@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+import phoneServie from "./services/phone";
+
 const App = () => {
   const [newName, setNewName] = useState("");
 
@@ -9,7 +11,7 @@ const App = () => {
   const [persons, setPersons] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((res) => {
+    phoneServie.getAll().then((res) => {
       setPersons(res.data);
     });
   }, []);
@@ -34,7 +36,7 @@ const App = () => {
 
       setNewName("");
     } else {
-      setPersons(persons.concat(obj));
+      phoneServie.create(obj);
 
       setNewName("");
       setNumber("");
