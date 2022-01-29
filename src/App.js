@@ -3,13 +3,14 @@ import axios from "axios";
 
 import phoneService from "./services/phone";
 import FindNumber from "./components/FindNumber";
+import Footer from "./components/Footer";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [newName, setNewName] = useState("");
-
   const [newNumber, setNumber] = useState("");
-
   const [persons, setPersons] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     phoneService.getAll().then((res) => {
@@ -48,7 +49,12 @@ const App = () => {
 
       setNewName("");
     } else {
-      phoneService.create(obj);
+      phoneService.create(obj).then((response) => {
+        setErrorMessage(`Added ${newName}`);
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
+      });
 
       setNewName("");
       setNumber("");
@@ -57,7 +63,12 @@ const App = () => {
 
   const handleClick = (id, name) => {
     if (window.confirm(` Are you sure you want to delete ${name} ?`)) {
-      phoneService.destroy(id);
+      phoneService.destroy(id).catch((err) => {
+        setErrorMessage(
+          `information abaout ${name} have been removed from the server`
+        );
+        setPersons(persons.filter((n) => n.id !== id));
+      });
     } else {
     }
   };
@@ -72,6 +83,7 @@ const App = () => {
   return (
     <div>
       <h1 style={{ color: "purple", border: "2px solid purple" }}>Phonebook</h1>
+      <Notification message={errorMessage} />
 
       <FindNumber persons={persons} />
       <form onSubmit={addPerson}>
@@ -105,6 +117,7 @@ const App = () => {
       <h2>Numbers</h2>
 
       {numbers}
+      <Footer />
     </div>
   );
 };
